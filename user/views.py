@@ -37,8 +37,10 @@ class UserActivityView(APIView):
         user.save()
 
         response_data = {
-            "last_login": user.last_login.strftime("%Y-%m-%d %H:%M:%S") if user.last_login else "Never",
-            "last_request": now.strftime("%Y-%m-%d %H:%M:%S")
+            "last_login": user.last_login.strftime("%Y-%m-%d %H:%M:%S")
+            if user.last_login
+            else "Never",
+            "last_request": now.strftime("%Y-%m-%d %H:%M:%S"),
         }
 
         return Response(response_data)

@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('user', '0002_alter_user_managers_remove_user_username_and_more'),
+        ("user", "0002_alter_user_managers_remove_user_username_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='last_request',
+            model_name="user",
+            name="last_request",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='last_login',
+            model_name="user",
+            name="last_login",
             field=models.DateTimeField(blank=True, null=True),
         ),
     ]
