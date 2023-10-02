@@ -5,7 +5,7 @@ from .views import (
     PostDetailView,
     LikePostView,
     UnlikePostView,
-    # AnalyticsView,
+    AnalyticsView,
 )
 
 urlpatterns = [
@@ -32,11 +32,11 @@ urlpatterns = [
         name="unlike-post"
     ),
 
-    # path(
-    #     "analitics/",
-    #     AnalyticsView.as_view(),
-    #     name="analytics"
-    # ),
+    path(
+        "analitics/",
+        AnalyticsView.as_view(),
+        name="analytics"
+    ),
 ]
 
 app_name = "post"

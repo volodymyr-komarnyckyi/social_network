@@ -1,5 +1,5 @@
-# from django.db.models import Count
-# from django.db.models.functions import TruncDate
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -9,7 +9,7 @@ from .models import Post
 from .serializers import (
     PostSerializer,
     LikeActionSerializer,
-    # AnalyticsSerializer,
+    AnalyticsSerializer,
     CreatePostSerializer
 )
 
@@ -92,29 +92,27 @@ class UnlikePostView(APIView):
         )
 
 
-# class AnalyticsView(generics.ListAPIView):
-#     serializer_class = AnalyticsSerializer
-#
-#     def get_queryset(self):
-#         date_from = self.request.query_params.get("date_from")
-#         date_to = self.request.query_params.get("date_to")
-#
-#         queryset = Post.objects.all()
-#
-#         if date_from and date_to:
-#             queryset = queryset.filter(
-#                 created_at__date__range=[date_from, date_to]
-#             )
-#
-#         queryset = (
-#             queryset.annotate(date=TruncDate("created_at"))
-#             .values("date")
-#             .annotate(count=Count("likes"))
-#             .order_by("date")
-#         )
-#         return queryset
-#
-#     def list(self, request, *args, **kwargs):
-#         queryset = self.get_queryset()
-#         serializer = self.get_serializer(queryset, many=True)
-#         return Response(serializer.data)
+class AnalyticsView(generics.ListAPIView):
+    serializer_class = AnalyticsSerializer
+
+    def get_queryset(self):
+        date_from = self.request.query_params.get("date_from")
+        date_to = self.request.query_params.get("date_to")
+
+        queryset = Post.objects.all()
+
+        if date_from and date_to:
+            queryset = queryset.filter(
+                created_at__date__range=[date_from, date_to]
+            )
+
+        queryset = queryset.annotate(
+            date=TruncDate("created_at")).values("date").annotate(
+            likes_count=Count("likes")
+        ).order_by("date")
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
