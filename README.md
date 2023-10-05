@@ -103,8 +103,13 @@ docker-compose up
 
 ## Demo
 
-![Website Interface](readme_images/demo/revenue_statistic.png)
-![Website Interface](readme_images/demo/spend_statistic.png)
+![Website Interface](readme_images/post_list.jpg)
+![Website Interface](readme_images/post_detail.jpg)
+![Website Interface](readme_images/post_like.jpg)
+![Website Interface](readme_images/post_unlike.jpg)
+![Website Interface](readme_images/post_unlike.jpg)
+![Website Interface](readme_images/analytics.jpg)
+![Website Interface](readme_images/user_activity.jpg)
 
 <hr>
 
