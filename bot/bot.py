@@ -44,42 +44,38 @@ def create_posts(user_id, token):
             print(f"Failed to create a post for user {user_id}.")
 
 
-# def like_posts(user_id, token):
-#     num_likes = random.randint(1, config["max_likes_per_user"] + 1)
-#
-#     headers = {"Authorization": f"Bearer {token}"}
-#     response = requests.get(
-#         f"{base_url}/api/posts/",
-#         headers=headers,
-#     )
-#     if response.status_code != 200:
-#         print(f"Failed to retrieve posts for user {user_id}.")
-#         return
-#
-#     posts = response.json()
-#
-#     if not posts:
-#         print(f"No posts found.")
-#         return
-#
-#     for _ in range(num_likes):
-#         # Вибрати випадковий пост зі списку існуючих постів
-#         post = random.choice(posts)
-#         post_id = post["id"]
-#
-#         # Спробувати лайкнути пост
-#         response = requests.post(
-#             f"{base_url}/api/posts/{post_id}/like/",
-#             headers=headers
-#         )
-#
-#         if response.status_code == 200:
-#             print(f"{response.text}")
-#         else:
-#             print(f"{response.text}")
-#
-#             print(f"Failed to like post {post_id} for user {user_id}.")
-#
+def like_posts(user_id, token):
+    num_likes = random.randint(1, config["max_likes_per_user"] + 1)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(
+        f"{base_url}/api/posts/",
+        headers=headers,
+    )
+    if response.status_code != 200:
+        print(f"Failed to retrieve posts for user {user_id}.")
+        return
+
+    posts = response.json()
+
+    if not posts:
+        print(f"No posts found.")
+        return
+
+    for _ in range(num_likes):
+        post = random.choice(posts)
+        post_id = post["id"]
+
+        response = requests.post(
+            f"{base_url}/api/posts/{post_id}/like/",
+            headers=headers
+        )
+
+        if response.status_code == 201:
+            print(f"User {user_id} liked post {post_id}")
+        else:
+            print(f"Failed to like post {post_id} for user {user_id}.")
+
 
 def get_jwt_token(email, password):
     response = requests.post(
@@ -103,7 +99,7 @@ def main():
             email, password
         )
         create_posts(i, token)
-        # like_posts(i, token)
+        like_posts(i, token)
 
 
 if __name__ == "__main__":
