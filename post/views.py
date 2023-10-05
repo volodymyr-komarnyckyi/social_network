@@ -10,12 +10,12 @@ from .serializers import (
     PostSerializer,
     LikeActionSerializer,
     AnalyticsSerializer,
-    CreatePostSerializer
+    CreatePostSerializer,
 )
 
 
 class PostListView(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related("user").prefetch_related("likes")
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
 
@@ -23,7 +23,7 @@ class PostListView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.method == 'POST':
+        if self.request.method == "POST":
             return CreatePostSerializer
         return PostSerializer
 
@@ -106,10 +106,12 @@ class AnalyticsView(generics.ListAPIView):
                 created_at__date__range=[date_from, date_to]
             )
 
-        queryset = queryset.annotate(
-            date=TruncDate("created_at")).values("date").annotate(
-            likes_count=Count("likes")
-        ).order_by("date")
+        queryset = (
+            queryset.annotate(date=TruncDate("created_at"))
+            .values("date")
+            .annotate(likes_count=Count("likes"))
+            .order_by("date")
+        )
         return queryset
 
     def list(self, request, *args, **kwargs):

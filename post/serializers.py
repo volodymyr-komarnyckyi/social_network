@@ -10,7 +10,7 @@ class CreatePostSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    user = UserEmailSerializer()
+    user = UserEmailSerializer(read_only=True)
     likes = UserEmailSerializer(many=True, read_only=True)
     likes_count = serializers.SerializerMethodField()
     created_at = serializers.SerializerMethodField()
@@ -23,15 +23,13 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "user", "created_at", "likes_count", "likes")
 
     def get_user(self, obj):
-        return {
-            "email": obj.user.email if obj.user else ""
-        }
+        return {"email": obj.user.email if obj.user else ""}
 
     def get_likes_count(self, obj):
         return obj.likes.count()
 
     def get_created_at(self, obj):
-        return obj.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        return obj.created_at.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class LikeActionSerializer(serializers.Serializer):

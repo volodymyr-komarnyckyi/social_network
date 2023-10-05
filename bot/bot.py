@@ -59,7 +59,7 @@ def like_posts(user_id, token):
     posts = response.json()
 
     if not posts:
-        print(f"No posts found.")
+        print("No posts found.")
         return
 
     for _ in range(num_likes):
@@ -67,8 +67,7 @@ def like_posts(user_id, token):
         post_id = post["id"]
 
         response = requests.post(
-            f"{base_url}/api/posts/{post_id}/like/",
-            headers=headers
+            f"{base_url}/api/posts/{post_id}/like/", headers=headers
         )
 
         if response.status_code == 201:
@@ -79,7 +78,8 @@ def like_posts(user_id, token):
 
 def get_jwt_token(email, password):
     response = requests.post(
-        f"{base_url}/api/user/token/", data={"email": email, "password": password}
+        f"{base_url}/api/user/token/",
+        data={"email": email, "password": password}
     )
     if response.status_code == 200:
         token = response.json()["access"]
@@ -95,13 +95,10 @@ def main():
     for i in range(1, config["number_of_users"] + 1):
         email = f"user{i}@example.com"
         password = f"user{i}12qwas"
-        token = get_jwt_token(
-            email, password
-        )
+        token = get_jwt_token(email, password)
         create_posts(i, token)
         like_posts(i, token)
 
 
 if __name__ == "__main__":
     main()
-
