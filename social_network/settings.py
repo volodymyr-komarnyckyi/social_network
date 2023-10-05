@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rest_framework",
+    "drf_spectacular",
 
     "post",
     "user",
@@ -96,11 +97,25 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 
 SIMPLE_JWT = {
-    'USER_ID_FIELD': 'email',  # Параметр, що вказує на використання email як ідентифікатора користувача
+    "USER_ID_FIELD": "email",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Social Network",
+    "DESCRIPTION": "Project for managing analytics about posts",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "defaultModelRendering": "model",
+        "defaultModelsExpandDepth": 2,
+        "defaultModelExpandDepth": 2,
+    },
 }
